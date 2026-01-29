@@ -18,6 +18,7 @@ pipeline {
                 echo 'deploying the image...'
             }
         }
+    }
         post {
             always {
                 echo 'always runs'
@@ -29,5 +30,4 @@ pipeline {
                 echo 'pipeline failed'
             }
         }
-    }
 }
