@@ -1,33 +1,36 @@
 pipeline {
     agent any 
+    parameters {
+        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0', description: 'versions to be selected'])
+        booleanParams(name: 'executeTests', defaultValue: true, description: '')
+    }
     stages{
+        stage ("init") {
+            steps {
+                script {
+                    gv = loads "scripts.groovy"
+                }
+            }
+        }
         stage ("build") {
             steps {
-                echo 'building the image...'
+               script {
+                    gv.buildApp()
+               }
             }
         }
 
         stage ("test") {
-            steps {
-                echo 'testing the image...'
+            when {
+                expression {
+                    params.executeTests
+                }
             }
-        }
-
-        stage ("deploy") {
             steps {
-                echo 'deploying the image...'
+                script {
+                    gv.testApp()
+                }
             }
         }
     }
-        post {
-            always {
-                echo 'always runs'
-            }
-            success {
-                echo 'pipeline successfull'
-            }
-            failure {
-                echo 'pipeline failed'
-            }
-        }
 }
