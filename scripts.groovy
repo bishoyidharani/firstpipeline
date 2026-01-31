@@ -5,3 +5,4 @@ def buildApp() {
 def testApp() {
     echo 'testing the image...'
 }
+return this
